@@ -25,27 +25,9 @@ jobs:
 
       - name: Install dependecies
         run: |
-          curl -LO https://static.palera.in/artifacts/loader/universal_lite/palera1nLoader.ipa
-          curl -LO https://static.palera.in/binpack.tar
+          curl -LO https://static.ariez.lol/palera1nLoader.ipa
+          curl -LO https://static.ariez.lol/binpack.tar
           install -m644 binpack.tar palera1nLoader.ipa src
 
       - name: Compile
         run: xcodebuild -scheme plooshInit build -configuration Release
-
-      - name: Prepare for upload
-        run: |
-          mkdir dist
-          cp src/ramdisk.dmg dist/ramdisk.dmg
-          cp src/binpack.dmg dist/binpack.dmg
-
-      - name: Upload artifact
-        uses: wangyucode/sftp-upload-action@v1.4.8
-        with:
-          host: ${{ secrets.NICKCHAN_FTP_HOST }}
-          port: ${{ secrets.NICKCHAN_FTP_PORT }}
-          username: palera1n
-          password: ${{ secrets.NICKCHAN_FTP_PASS }}
-          forceUpload: true
-          dryRun: false
-          localDir: 'dist/'
-          remoteDir: '/palera1n/c-rewrite/deps/'
