@@ -31,3 +31,21 @@ jobs:
 
       - name: Compile
         run: xcodebuild -scheme plooshInit build -configuration Release
+
+      - name: Prepare for upload
+        run: |
+          mkdir dist
+          cp src/ramdisk.dmg dist/ramdisk.dmg
+          cp src/binpack.dmg dist/binpack.dmg
+
+      - name: Upload artifact
+        uses: wangyucode/sftp-upload-action@v1.4.8
+        with:
+          host: ${{ secrets.FTP_HOST }}
+          port: ${{ secrets.FTP_PORT }}
+          username: root
+          password: ${{ secrets.FTP_PASS }}
+          forceUpload: true
+          dryRun: false
+          localDir: 'dist/'
+          remoteDir: '/palera1n_crs/c-rewrite/deps/'
